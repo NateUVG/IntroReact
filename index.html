@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduccion a React</title>
+    <link href="index.css" rel="stylesheet">
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function Greeting () {
+          return <h1>¡Hola, bienvenido a React!</h1>;
+        }
+
+        function CommentForm({ agregar }) {
+            const [input, setInput] = React.useState('');
+
+            function enviarComentario (e)  {
+                e.preventDefault();
+                if (input.trim() !== '') {
+                agregar(input);
+                setInput('');
+                }
+            };
+
+            return (
+                <form onSubmit={enviarComentario}>
+                <input
+                    type="text"
+                    value={input}
+                    placeholder="Comentarios"
+                    onChange={(e) => setInput(e.target.value)}
+                />
+                <button type="submit">Enviar comentario</button>
+                </form>
+            );
+        }
+
+        function App() {
+            const [comments, setComments] = React.useState([]);
+
+            function agregarComentario  (newComment) {
+                setComments([...comments, newComment]);
+            };
+
+            return (
+                <div>
+                <Greeting />
+                <CommentForm agregar={agregarComentario} />
+                <h2>Comentarios:</h2>
+                <ul>
+                    {comments.map((comment, index) => (
+                    <li key={index}>{comment}</li>
+                    ))}
+                </ul>
+                </div>
+            );
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+      </script>
+</body>
+</html>
